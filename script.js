@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 
-    // Função para criar gráfico de comparação entre escolas federais e estaduais
+
     // Função para criar gráfico de comparação entre escolas federais e estaduais
     function createCompararDesempenhoChart(estado, edicao) {
         fetch(`https://obmep-production.up.railway.app/api/comparar-desempenho?estado=${estado}&edicao=${edicao}`)

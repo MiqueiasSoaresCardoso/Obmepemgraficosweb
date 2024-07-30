@@ -55,7 +55,7 @@ h2, h3 {
     height: 40px; /* Defina a altura desejada */
 }
 
-.centralizado {
+.centralizadoo {
     text-align: center;
     font-style: italic;
     font-size: 16px;
@@ -63,7 +63,7 @@ h2, h3 {
     line-height: 1.5;
     margin: 20px 0;
 }
-.container {
+.containerr {
     display: flex;
     justify-content: center;
     align-items: center;
