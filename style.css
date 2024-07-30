@@ -55,6 +55,32 @@ h2, h3 {
     height: 40px; /* Defina a altura desejada */
 }
 
+.centralizado {
+    text-align: center;
+    font-style: italic;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+    margin: 20px 0;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#compararDesempenho {
+    width: 400px;
+    height: 400px;
+}
+#divcomparardesempenho{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
 
 premiacao-box {
     background-color: #f0f0f0;

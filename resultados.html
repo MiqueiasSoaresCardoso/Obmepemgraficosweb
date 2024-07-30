@@ -26,10 +26,13 @@
 </header>
 <main>
 
-<section>
-   <h4 style="text-align: right; font-style: italic;">
-    *Considere que "edição" = ano da olimpíada; "nível 1" = alunos do 6º e 7º ano do Ensino Fundamental; "nível 2" = alunos do 8º e 9º ano do Ensino Fundamental; "nível 3" = alunos de todos os anos do Ensino Médio.
-</h4><br><br>
+    <div class="container">
+        <section>
+            <h4 class="centralizado">
+                Considere que "edição" = ano da olimpíada; "nível 1" = alunos do 6º e 7º ano do Ensino Fundamental; "nível 2" = alunos do 8º e 9º ano do Ensino Fundamental; "nível 3" = alunos de todos os anos do Ensino Médio.
+            </h4>
+        </section>
+    </div>
 
 
     <center><h2>DADOS DE TODAS AS EDIÇÕES DAS OBMEP</h2></center>
@@ -160,7 +163,7 @@
     <section>
          <div class="titulo">
         <img src="img/logo-obmepemgraficos.png" width="50" height="41">
-        <h2>Desempenho entre instituições Federais e Estaduais</h2>
+        <h2>Desempenho entre instituições Federais e Estaduais (Nivel 3)</h2>
         </div><br>    
         <form id="consultaFE">
                 <label for="estado">Estado:</label>
@@ -199,8 +202,11 @@
             <button type="submit">Consultar</button>
         </form>
     </div>
-    <canvas id="compararDesempenho" width="400" height="200"></canvas>
-    <script src="script.js"></script>
+        <div id="divcomparardesempenho">
+            <canvas id="compararDesempenho" width="400" height="200"></canvas>
+            <script src="script.js"></script>
+        </div>
+
 </section>
 
     <section>
@@ -467,7 +473,7 @@
     <center>
         <p>&copy; 2024 Frederico, José Henrique, Miqueias, Wallennon. Todos os direitos reservados.</p>
         <p>Programa de Pós-Graduação em TI, IFPB.</p>
-        <p>Fale Conosco!</p>
+
     </center>
 </footer>
 </body>

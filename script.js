@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Erro ao buscar os dados:', error));
     }
 
-//SCRIPT PARA A EXIBIÇÃO DA COMPARAÇÃO ENTRE ESCOLAS PUBLICAS E PROVADAS DE UM DADO MUNICIPIO
+//SCRIPT PARA A EXIBIÇÃO DA COMPARAÇÃO ENTRE ESCOLAS PUBLICAS E PRIVADAS DE UM DADO MUNICIPIO
    function createDesempenhoPublicoPrivadoChart(municipio, edicao, nivel) {
     fetch(`https://obmep-production.up.railway.app/api/comparar-desempenho-publico-privado?municipio=${municipio}&edicao=${edicao}&nivel=${nivel}`)
         .then(response => response.json())
@@ -94,13 +94,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Função para criar gráfico de comparação entre escolas federais e estaduais
+    // Função para criar gráfico de comparação entre escolas federais e estaduais
     function createCompararDesempenhoChart(estado, edicao) {
         fetch(`https://obmep-production.up.railway.app/api/comparar-desempenho?estado=${estado}&edicao=${edicao}`)
             .then(response => response.json())
             .then(data => {
-                const labels = data.escolas_federais.map((_, index) => `Escola ${index + 1}`);
-                const totalFederais = data.escolas_federais.map(escola => escola.total_premiacoes);
-                const totalEstaduais = data.escolas_estaduais.map(escola => escola.total_premiacoes);
+                const totalFederais = data.escolas_federais.reduce((sum, escola) => sum + escola.total_premiacoes, 0);
+                const totalEstaduais = data.escolas_estaduais.reduce((sum, escola) => sum + escola.total_premiacoes, 0);
 
                 const ctx = document.getElementById('compararDesempenho').getContext('2d');
 
@@ -109,32 +109,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.compararDesempenhoChart.destroy();
                 }
 
-                // Criar um novo gráfico de barras
+                // Criar um novo gráfico de pizza
                 window.compararDesempenhoChart = new Chart(ctx, {
-                    type: 'bar',
+                    type: 'pie',
                     data: {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'Escolas Federais',
-                                data: totalFederais,
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 1
-                            },
-                            {
-                                label: 'Escolas Estaduais',
-                                data: totalEstaduais,
-                                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                                borderColor: 'rgba(255, 159, 64, 1)',
-                                borderWidth: 1
-                            }
-                        ]
+                        labels: ['Escolas Federais', 'Escolas Estaduais'],
+                        datasets: [{
+                            data: [totalFederais, totalEstaduais],
+                            backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+                            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
+                            borderWidth: 1
+                        }]
                     },
                     options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                                    }
+                                }
                             }
                         }
                     }
@@ -143,40 +141,40 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Erro ao buscar os dados:', error));
     }
 
-    // Função para exibir mensagem inicial
-function showInitialMessage() {
-    const ctx = document.getElementById('desempenhoPublicoPrivado').getContext('2d');
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Limpar o canvas
-    ctx.font = "10px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("", ctx.canvas.width / 2, ctx.canvas.height / 2);
-}
-
-// Event listener para formulário de consulta de desempenho público vs privado
-document.getElementById('consultaForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    let municipio = document.getElementById('municipio').value;
-    const edicao = document.getElementById('edicao').value;
-    const nivel = document.getElementById('nivel').value;
-
-    // Função para formatar o nome do município
-    municipio = municipio.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/gi, '');
-
-    // Validação do nível entre 1 e 3
-    if (isNaN(nivel) || nivel < 1 || nivel > 3) {
-        alert('Por favor insira um nível entre 1 e 3.');
-        return;
+// Função para exibir mensagem inicial
+    function showInitialMessage() {
+        const ctx = document.getElementById('desempenhoPublicoPrivado').getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Limpar o canvas
+        ctx.font = "10px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("", ctx.canvas.width / 2, ctx.canvas.height / 2);
     }
 
-    // Criar gráfico de desempenho público vs privado
-    createDesempenhoPublicoPrivadoChart(municipio, edicao, nivel);
-});
+// Event listener para formulário de consulta de desempenho público vs privado
+    document.getElementById('consultaForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        let municipio = document.getElementById('municipio').value;
+        const edicao = document.getElementById('edicao').value;
+        const nivel = document.getElementById('nivel').value;
+
+        // Função para formatar o nome do município
+        municipio = municipio.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/gi, '');
+
+        // Validação do nível entre 1 e 3
+        if (isNaN(nivel) || nivel < 1 || nivel > 3) {
+            alert('Por favor insira um nível entre 1 e 3.');
+            return;
+        }
+
+        // Criar gráfico de desempenho público vs privado
+        createDesempenhoPublicoPrivadoChart(municipio, edicao, nivel);
+    });
 
 // Exibir mensagem inicial
-showInitialMessage();
+    showInitialMessage();
 
-    // Event listener para formulário de consulta de comparação entre escolas federais e estaduais
+// Event listener para formulário de consulta de comparação entre escolas federais e estaduais
     document.getElementById('consultaFE').addEventListener('submit', function(event) {
         event.preventDefault();
         let estado = document.getElementById('estado').value;
@@ -186,8 +184,9 @@ showInitialMessage();
         createCompararDesempenhoChart(estado, edicao);
     });
 
-    // Carregar gráfico de ranking geral de estados ao carregar a página
+// Carregar gráfico de ranking geral de estados ao carregar a página
     createRankingGeralChart();
+
 });
 //EXIBIR A TRAJETORIA DE UMA ESCOLA ESPECIFICA
 document.addEventListener('DOMContentLoaded', function() {
