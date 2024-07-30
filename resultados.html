@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obmep em Graficos</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<header>
+    <h1 id="title">OBMEP EM GRÁFICOS</h1>
+    <style >
+        .titulo {
+            display: flex;
+            align-items: center;
+        }
+
+        .titulo img {
+            margin-right: 10px;
+        }
+
+    </style>
+</header>
+<main>
+
+<section>
+   <h4 style="text-align: right; font-style: italic;">
+    *Considere que "edição" = ano da olimpíada; "nível 1" = alunos do 6º e 7º ano do Ensino Fundamental; "nível 2" = alunos do 8º e 9º ano do Ensino Fundamental; "nível 3" = alunos de todos os anos do Ensino Médio.
+</h4><br><br>
+
+
+    <center><h2>DADOS DE TODAS AS EDIÇÕES DAS OBMEP</h2></center>
+    <section id="totalPremiacoes">
+        <div class="frame">
+            <div class="premiacao-box">
+                <h3>Total de Premiações</h3>
+                <p id="totalGeral">0</p>
+            </div>
+        </div>
+        <div class="frame">
+            <div class="premiacao-box">
+                <h3>Ouro</h3>
+                <p id="totalOuro">0</p>
+            </div>
+        </div>
+        <div class="frame">
+            <div class="premiacao-box">
+                <h3>Prata</h3>
+                <p id="totalPrata">0</p>
+            </div>
+        </div>
+        <div class="frame">
+            <div class="premiacao-box">
+                <h3>Bronze</h3>
+                <p id="totalBronze">0</p>
+            </div>
+        </div>
+    </section>
+</section>
+
+    <section>
+        <div class="titulo">
+        <img src="img/logo-obmepemgraficos.png" width="50" height="41">
+        <h2>Ranking Geral por Estados</h2>
+        </div><br>
+        <canvas id="rankingEstados"></canvas>
+    </section>
+
+
+    <section>
+        <div class="titulo">
+        <img src="img/logo-obmepemgraficos.png" width="50" height="41">
+        <h2>Desempenho entre instituições Públicas e Privadas</h2>
+        </div><br>    
+    <div class="form-container">
+        <form id="consultaForm">
+            <label for="municipio">Município:</label>
+            <input type="text" id="municipio" name="municipio" required>
+            <label for="nivel">Nível:</label>
+            <select id="nivel" name="nivel">
+                <option value="1">Nível 1</option>
+                <option value="2">Nível 2</option>
+                <option value="3">Nível 3</option>
+            </select>
+            <label for="edicao">Edição:</label>
+            <input type="number" id="edicao" name="edicao" placeholder="2005" required>
+            
+            <button type="submit">Consultar</button>
+        </form>
+    </div>
+    <canvas id="desempenhoPublicoPrivado"></canvas>
+    <div id="noResultsMessage" style="display: none; text-align: center; font-size: 20px; margin-top: 20px;">
+    SEM RESULTADOS ATÉ O MOMENTO
+</div>
+</section>
+
+    <section>
+         <div class="titulo">
+        <img src="img/logo-obmepemgraficos.png" width="50" height="41">
+        <h2>Desempenho entre as cinco melhores instituições Municipais e Estaduais</h2>   
+        </div><br>
+         
+
+        <form id="formCompararDesempenho">
+            <label for="estado">Estado:</label>
+            <select id="estadoDME">
+                <option value="AC">Acre</option>
+                    <option value="AL">Alagoas</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="ES">Espírito Santo</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="PA">Pará</option>
+                    <option value="PB" selected>Paraíba</option>
+                    <option value="PR">Paraná</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="RR">Roraima</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="SE">Sergipe</option>
+                    <option value="TO">Tocantins</option>
+            </select>
+
+            <label for="nivel">Nível:</label>
+            <select id="nivelDME">
+                <option value="1">Nível 1</option>
+                <option value="2">Nível 2</option>
+                <option value="3">Nível 3</option>
+            </select>
+
+            <label for="edicao">Edição:</label>
+            <input type="number" id="edicaoDME" placeholder="2005" min="2005" max="2023" required>
+
+            <button type="submit">Consultar</button>
+        </form>
+
+        <div>
+            <div id="chartContainer" >
+                <canvas id="chart"></canvas>
+            </div>
+        </div>
+    </section>
+
+
+    <section>
+         <div class="titulo">
+        <img src="img/logo-obmepemgraficos.png" width="50" height="41">
+        <h2>Desempenho entre instituições Federais e Estaduais</h2>
+        </div><br>    
+        <form id="consultaFE">
+                <label for="estado">Estado:</label>
+                <select id="estado">
+                    <option value="AC">Acre</option>
+                    <option value="AL">Alagoas</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="ES">Espírito Santo</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="PA">Pará</option>
+                    <option value="PB" selected>Paraíba</option>
+                    <option value="PR">Paraná</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="RR">Roraima</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="SE">Sergipe</option>
+                    <option value="TO">Tocantins</option>
+                </select>  
+                <label for="edicao">Edição:</label>
+                <input type="text" id="edicaoFE" name="edicao" placeholder="2005" required>
+            
+            <button type="submit">Consultar</button>
+        </form>
+    </div>
+    <canvas id="compararDesempenho" width="400" height="200"></canvas>
+    <script src="script.js"></script>
+</section>
+
+    <section>
+        <div class="titulo">
+        <img src="img/logo-obmepemgraficos.png" width="50" height="41">
+        <h2>Trajetória de prêmios por estado</h2>
+        </div><br>
+    
+        
+        <form id="formTrajetoriaEstado">
+            <label for="estado">Estado:</label>
+            <select id="estadoS" name="estado">
+                <option value="AC">Acre</option>
+                <option value="AL">Alagoas</option>
+                <option value="AP">Amapá</option>
+                <option value="AM">Amazonas</option>
+                <option value="BA">Bahia</option>
+                <option value="CE">Ceará</option>
+                <option value="DF">Distrito Federal</option>
+                <option value="ES">Espírito Santo</option>
+                <option value="GO">Goiás</option>
+                <option value="MA">Maranhão</option>
+                <option value="MT">Mato Grosso</option>
+                <option value="MS">Mato Grosso do Sul</option>
+                <option value="MG">Minas Gerais</option>
+                <option value="PA">Pará</option>
+                <option value="PB" selected>Paraíba</option>
+                <option value="PR">Paraná</option>
+                <option value="PE">Pernambuco</option>
+                <option value="PI">Piauí</option>
+                <option value="RJ">Rio de Janeiro</option>
+                <option value="RN">Rio Grande do Norte</option>
+                <option value="RS">Rio Grande do Sul</option>
+                <option value="RO">Rondônia</option>
+                <option value="RR">Roraima</option>
+                <option value="SC">Santa Catarina</option>
+                <option value="SP">São Paulo</option>
+                <option value="SE">Sergipe</option>
+                <option value="TO">Tocantins</option>
+            </select>
+            <button type="submit">Consultar</button>
+        </form>
+
+        <div>
+            <canvas id="trajetoriaEstado" width="800" height="400"></canvas>
+        </div>
+    </section>
+
+
+    <section>
+        <div class="titulo">
+        <img src="img/logo-obmepemgraficos.png" width="50" height="41">
+        <h2>Trajetória de prêmios por município</h2>
+        </div><br>
+        
+        <form id="formTrajetoriaMunicipio">
+            <label for="municipio">Município:</label>
+            <input type="text" id="municipioTJ" name="municipio" placeholder="JOAO PESSOA">
+            <button type="submit">Consultar</button>
+        </form>
+
+        <div>
+            <canvas id="trajetoriaMunicipio" width="800" height="400"></canvas>
+        </div>
+    </section>
+
+    <section>
+        <div class="titulo">
+        <img src="img/logo-obmepemgraficos.png" width="50" height="41">      
+        <h2>Instituição com maior destaque por estado</h2>
+        </div>   <br>
+
+        <form id="parametersForm">
+            <label for="estado">Estado:</label>
+            <select id="estadoTJ">
+                <option value="AC">Acre</option>
+                <option value="AL">Alagoas</option>
+                <option value="AP">Amapá</option>
+                <option value="AM">Amazonas</option>
+                <option value="BA">Bahia</option>
+                <option value="CE">Ceará</option>
+                <option value="DF">Distrito Federal</option>
+                <option value="ES">Espírito Santo</option>
+                <option value="GO">Goiás</option>
+                <option value="MA">Maranhão</option>
+                <option value="MT">Mato Grosso</option>
+                <option value="MS">Mato Grosso do Sul</option>
+                <option value="MG">Minas Gerais</option>
+                <option value="PA">Pará</option>
+                <option value="PB" selected>Paraíba</option>
+                <option value="PR">Paraná</option>
+                <option value="PE">Pernambuco</option>
+                <option value="PI">Piauí</option>
+                <option value="RJ">Rio de Janeiro</option>
+                <option value="RN">Rio Grande do Norte</option>
+                <option value="RS">Rio Grande do Sul</option>
+                <option value="RO">Rondônia</option>
+                <option value="RR">Roraima</option>
+                <option value="SC">Santa Catarina</option>
+                <option value="SP">São Paulo</option>
+                <option value="SE">Sergipe</option>
+                <option value="TO">Tocantins</option>
+            </select>
+            <label for="nivel">Nível:</label>
+            <select id="nivelTJ" name="nivel">
+                <option value="1">Nível 1</option>
+                <option value="2">Nível 2</option>
+                <option value="3">Nível 3</option>
+            </select>
+            <label for="edicao">Edição:</label>
+            <input type="number" id="edicaoTJ" name="edicao" placeholder="2005" required>
+            <button type="submit">Consultar</button>
+        </form>
+        <div >
+            <center><h1><b><p id="schoolName"></p></b></h1></center>
+        </div>
+    </section>
+
+
+
+    <section>
+        <div class="titulo">
+        <img src="img/logo-obmepemgraficos.png" width="50" height="41">      
+        <h2>Instituição com maior destaque por município</h2> 
+        </div> <br>
+        
+        <form id="formInstituicaoDestacadaMM">
+            <label for="estadoMM">Estado:</label>
+            <select id="estadoMM">                
+                <option value="AC">Acre</option>
+                <option value="AL">Alagoas</option>
+                <option value="AP">Amapá</option>
+                <option value="AM">Amazonas</option>
+                <option value="BA">Bahia</option>
+                <option value="CE">Ceará</option>
+                <option value="DF">Distrito Federal</option>
+                <option value="ES">Espírito Santo</option>
+                <option value="GO">Goiás</option>
+                <option value="MA">Maranhão</option>
+                <option value="MT">Mato Grosso</option>
+                <option value="MS">Mato Grosso do Sul</option>
+                <option value="MG">Minas Gerais</option>
+                <option value="PA">Pará</option>
+                <option value="PB" selected>Paraíba</option>
+                <option value="PR">Paraná</option>
+                <option value="PE">Pernambuco</option>
+                <option value="PI">Piauí</option>
+                <option value="RJ">Rio de Janeiro</option>
+                <option value="RN">Rio Grande do Norte</option>
+                <option value="RS">Rio Grande do Sul</option>
+                <option value="RO">Rondônia</option>
+                <option value="RR">Roraima</option>
+                <option value="SC">Santa Catarina</option>
+                <option value="SP">São Paulo</option>
+                <option value="SE">Sergipe</option>
+                <option value="TO">Tocantins</option>
+            </select>
+
+            <label for="municipioMM">Município:</label>
+            <select id="municipioMM">
+            </select>
+
+            <label for="nivelMM">Nível:</label>
+            <select id="nivelMM">
+                <option value="1">Nível 1</option>
+                <option value="2">Nível 2</option>
+                <option value="3">Nível 3</option>
+            </select>
+
+            <label for="edicaoMM">Edição:</label>
+            <input type="text" id="edicaoMM" name="edicao" placeholder="2005" required>
+
+            <button type="submit">Consultar</button>
+        </form>
+    </section>
+    <section id="instituicaoDestacadaMM">
+        <div>
+            <center><h1 id="nomeInstituicaoMM"></h1>
+            <p id="totalPremiacoesMM"></p></center>
+        </div>
+    </section>
+
+    <section>
+         <div class="titulo">
+        <img src="img/logo-obmepemgraficos.png" width="50" height="41">      
+        <h2>Trajetória de prêmios por instituição</h2>
+        </div><br>
+        
+        <form id="formTrajetoriaEscola">
+            <label for="estadoTJE">Estado:</label>
+            <select id="estadoTJE">
+                <option value="AC">Acre</option>
+                <option value="AL">Alagoas</option>
+                <option value="AP">Amapá</option>
+                <option value="AM">Amazonas</option>
+                <option value="BA">Bahia</option>
+                <option value="CE">Ceará</option>
+                <option value="DF">Distrito Federal</option>
+                <option value="ES">Espírito Santo</option>
+                <option value="GO">Goiás</option>
+                <option value="MA">Maranhão</option>
+                <option value="MT">Mato Grosso</option>
+                <option value="MS">Mato Grosso do Sul</option>
+                <option value="MG">Minas Gerais</option>
+                <option value="PA">Pará</option>
+                <option value="PB" selected>Paraíba</option>
+                <option value="PR">Paraná</option>
+                <option value="PE">Pernambuco</option>
+                <option value="PI">Piauí</option>
+                <option value="RJ">Rio de Janeiro</option>
+                <option value="RN">Rio Grande do Norte</option>
+                <option value="RS">Rio Grande do Sul</option>
+                <option value="RO">Rondônia</option>
+                <option value="RR">Roraima</option>
+                <option value="SC">Santa Catarina</option>
+                <option value="SP">São Paulo</option>
+                <option value="SE">Sergipe</option>
+                <option value="TO">Tocantins</option>
+            </select>
+
+            <label for="municipioTJE">Município:</label>
+            <select id="municipioTJE">
+            </select>
+
+            <label for="escolaTJE">Escola:</label>
+            <select id="escolaTJE">
+            </select>
+
+            <button type="submit">Consultar</button>
+        </form>
+
+        <canvas id="trajetoriaEscola"></canvas>
+    </section>
+
+     <section id="totalPremiacoes">
+        <a href="index.html" class="frame-link">
+    <div class="frame">
+        <div class="premiacao-box2">
+            <h3>INÍCIO</h3>
+        </div>
+    </div>
+    </a>
+
+<a href="apresentacao.html" class="frame-link">
+    <div class="frame">
+        <div class="premiacao-box2">
+            <h3>APRESENTAÇÃO</h3>
+        </div>
+    </div>
+</a>
+    </section>
+
+    <a href="#title" class="frame-link">
+        <div >
+            <div class="floating-button">
+                <img id="img" src="/img/iconfooter.png" alt="icon">
+            </div>
+        </div>
+    </a>
+</main>
+<script src="script.js"></script>
+
+<footer>
+    <center>
+        <p>&copy; 2024 Frederico, José Henrique, Miqueias, Wallennon. Todos os direitos reservados.</p>
+        <p>Programa de Pós-Graduação em TI, IFPB.</p>
+    </center>
+</footer>
+</body>
+
+
+</html>
+
+
+
